@@ -1,2 +1,1 @@
-# isis
-Ilkom Strategic Information System
+# ISIS (Ilkom Strategic Information System)
