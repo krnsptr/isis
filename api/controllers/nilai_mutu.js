@@ -1,8 +1,7 @@
 var express = require('express');
 var path = require('path');
 var multer = require('multer');
-var fs = require('fs');
-var XLSX = require('xlsx');
+var ps = require('python-shell');
 
 var sequelize = require('../connection');
 
@@ -65,39 +64,41 @@ function NilaiMutuControllers() {
 			});
 	}
 
-	this.uploadLearning = function(req, res) {
-		var destination = 'public/uploads/';
-		var dir = '/../';
-		var filename = '';
+	// this.uploadLearning = function(req, res) {
+	// 	var destination = 'public/uploads/';
+	// 	var dir = '/../';
+	// 	var filename = '';
 
-		var upload = multer({
-			storage: multer.diskStorage({
-				destination: function (req, file, cb) {
-			    	cb(null, __dirname + dir + destination);
-			  	},
-				filename: function (req, file, cb) {
-					filename = file.fieldname + '-' + Date.now() + '.xlsx'
-			      	cb(null, filename);
-			  	}
-			})
-		}).any();
+	// 	var upload = multer({
+	// 		storage: multer.diskStorage({
+	// 			destination: function (req, file, cb) {
+	// 		    	cb(null, __dirname + dir + destination);
+	// 		  	},
+	// 			filename: function (req, file, cb) {
+	// 				filename = file.fieldname + '-' + Date.now() + '.xlsx'
+	// 		      	cb(null, filename);
+	// 		  	}
+	// 		})
+	// 	}).any();
 
-		upload(req, res, function(err) {
-			if (err) {
-				res.json({status: false, message: 'Upload xlsx gagal!', err: err});
-			} else {
-				var file = fs.readFile(__dirname + dir + destination + '/' + filename, (err, data) => {
-					if (err) {
+	// 	upload(req, res, function(err) {
+	// 		if (err) {
+	// 			res.json({status: false, message: 'Upload xlsx gagal!', err: err});
+	// 		} else {
+	// 			PythonShell.run('my_script.py', options, function (err, results) {
+	// 			  if (err) throw err;
+	// 			  // results is an array consisting of messages collected during execution
+	// 			  console.log('results: %j', results);
+	// 			});
+	// 		}
+	// 	});
+	// }
 
-					} else {
-						wa = XLSX.utils.sheet_to_json(data)
-						res.json({data: wa});
-					}
-				})
-				// res.json({status: true, message: 'Upload xlsx berhasil!', data: filename});
-			}
-		});
-	}
+	// this.prediksi = function(req, res) {
+	// 	var angkatan = req.body.angkatan;
+
+	// 	NilaiMutu
+	// }
 }
 
 module.exports = new NilaiMutuControllers();

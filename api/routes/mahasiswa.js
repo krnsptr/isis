@@ -8,8 +8,12 @@ router.post('/ipk/sebaran', function(req, res) {
   mahasiswa.sebaranIpkAngkatan(req, res);
 });
 
-router.post('/create', function(req, res) {
-  mahasiswa.create(req, res);
+router.post('/ipk/prediksi', function(req, res) {
+  mahasiswa.prediksiIpkAngkatan(req, res);
+});
+
+router.post('/kelulusan/prediksi', function(req, res) {
+  mahasiswa.prediksiKelulusanAngkatan(req, res);
 });
 
 module.exports = router;

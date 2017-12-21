@@ -12,4 +12,8 @@ router.post('/create', function(req, res) {
   nilai_mutu.create(req, res);
 });
 
+router.post('/upload/', function(req, res) {
+  nilai_mutu.upload(req, res);
+});
+
 module.exports = router;
