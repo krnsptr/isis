@@ -25,8 +25,6 @@
                   </li>
                    <li><a href="input-nilai.php"><i class="fa fa-keyboard-o"></i>Input Nilai</a>
                   </li>
-                  <li><a href="input-mahasiswa.php"><i class="fa fa-keyboard-o"></i>Input Data Mahasiswa</a>
-                  </li>
                 </ul>
               </div>
             </div>
