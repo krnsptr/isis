@@ -4,6 +4,6 @@
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>Admin</h2>
+                <h2>Agus Buono</h2>
               </div>
             </div>
