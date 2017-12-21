@@ -4,6 +4,10 @@ var router = express.Router();
 var mahasiswa = require('../controllers/mahasiswa');
 
 /* GET users listing. */
+router.get('/angkatan/:angkatan', function(req, res) {
+  mahasiswa.getAngkatan(req, res);
+});
+
 router.post('/ipk/sebaran', function(req, res) {
   mahasiswa.sebaranIpkAngkatan(req, res);
 });

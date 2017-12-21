@@ -10,6 +10,7 @@ var index = require('./routes/index');
 var user = require('./routes/user');
 var nilai_mutu = require('./routes/nilai_mutu');
 var mahasiswa = require('./routes/mahasiswa');
+var mata_kuliah = require('./routes/mata_kuliah');
 
 var app = express();
 
@@ -30,6 +31,8 @@ app.use('/nilai-mutu', nilai_mutu);
 app.use('/nilai-mutu/*', nilai_mutu);
 app.use('/mahasiswa', mahasiswa);
 app.use('/mahasiswa/*', mahasiswa);
+app.use('/mata-kuliah', mata_kuliah);
+app.use('/mata-kuliah/*', mata_kuliah);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

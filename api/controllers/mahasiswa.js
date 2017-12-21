@@ -12,6 +12,22 @@ var MataKuliah = sequelize.import(__dirname + '/../models/mata_kuliah');
 Mahasiswa.hasMany(NilaiMutu, { foreignKey: 'mahasiswa_id' })
 NilaiMutu.belongsTo(MataKuliah, { foreignKey: 'mata_kuliah_id' })
 function MahasiswaControllers() {
+	this.getAngkatan = function(req, res) {
+		var angkatan = req.params.angkatan
+		Mahasiswa
+			.findAll({
+				where: {
+					angkatan: angkatan
+				}
+			})
+			.then((result) => {
+				res.json({status: true, message: 'Ambil angkatan mahasiswa berhasil!', data: result});
+			})
+			.catch((err) => {
+				res.json({status: false, message: 'Ambil angkatan mahasiswa gagal!', err: err});
+			});
+	}
+
 	this.sebaranIpkAngkatan = function(req, res) {
 		sebaran = {};
 		angkatan = req.body.angkatan;
@@ -77,10 +93,6 @@ function MahasiswaControllers() {
 			});
 		
 	}
-
-	// this.create = function(req, res) {
-	// 	var file = req.file
-	// }
 }
 
 module.exports = new MahasiswaControllers();
