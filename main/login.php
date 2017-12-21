@@ -1,8 +1,3 @@
-<?php
-error_reporting(0);
-session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,7 +7,7 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Admin Simpensiun</title>
+    <title>Login ISIS</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,6 +20,8 @@ session_start();
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
+
+    <script src="vendors/knockout/knockout-3.4.2.js"></script>
   </head>
 
   <body class="login">
@@ -36,15 +33,15 @@ session_start();
         <div class="animate form login_form">
           <section class="login_content">
             <form method="post" action="">
-              <h1>Masuk Disini</h1>
+              <h1>Masuk ke ISIS</h1>
               <div>
-                <input type="text" name="npp" class="form-control" placeholder="Nomor Poko Pegawai / Nama"  />
+                <input data-bind="value: email" type="email" name="email" class="form-control" placeholder="Alamat Email "  />
               </div>
               <div>
-                <input type="password" name="password" class="form-control" placeholder="Password" />
+                <input data-bind="value: password" type="password" name="password" class="form-control" placeholder="Password" />
               </div>
               <div>
-                <input class="btn btn-default submit" style="margin:auto; text-align:center;width: 350px;background-color: #75aade;color: white;" type="submit" name="login" value="Masuk">
+                <button data-bind="click: login" class="btn btn-default submit" style="margin:auto; text-align:center;width: 350px;background-color: #75aade;color: white;" type="button" name="login">Masuk</button>
               </div>
 
               <div class="clearfix"></div>
@@ -65,5 +62,17 @@ session_start();
 
       </div>
     </div>
+    <script type="text/javascript">
+      function App() {
+          this.email = "";
+          this.password = "";
+
+          this.login = function() {
+              alert(this.email + ' : ' + this.password);
+          };
+      }
+
+      ko.applyBindings(new App());
+    </script>
   </body>
 </html>

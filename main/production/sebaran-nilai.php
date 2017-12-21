@@ -41,13 +41,13 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <!-- top tiles -->
-          <div class="row tile_count">
+          <!--div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Mahasiswa Aktif</span>
               <div class="count">369</div>
               <span class="count_bottom"><i class="green">4% </i>Masa Studi >4tahun</span>
             </div>
-          </div>
+          </div-->
           <!-- /top tiles -->
 
           <div class="row">
@@ -56,62 +56,19 @@
 
                 <div class="row x_title">
                   <div class="col-md-6">
-                    <h3>Network Activities <small>Graph title sub-title</small></h3>
+                    <h3>Sebaran Nilai Mata Kuliah</h3>
                   </div>
                   <div class="col-md-6">
-                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                      <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                    </div>
+                    <label>Mata Kuliah</label>
+                    <input type="number" data-bind="value: sebaran.mata_kuliah_id" />
+                    <label>Tahun</label>
+                    <input type="number" data-bind="value: sebaran.tahun" />
+                    <button data-bind="click: lihat">Lihat</button>
                   </div>
                 </div>
 
-                <div class="col-md-9 col-sm-9 col-xs-12">
-                  <div id="chart_plot_01" class="demo-placeholder"></div>
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-12 bg-white">
-                  <div class="x_title">
-                    <h2>Top Campaign Performance</h2>
-                    <div class="clearfix"></div>
-                  </div>
-
-                  <div class="col-md-12 col-sm-12 col-xs-6">
-                    <div>
-                      <p>Facebook Campaign</p>
-                      <div class="">
-                        <div class="progress progress_sm" style="width: 76%;">
-                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="80"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p>Twitter Campaign</p>
-                      <div class="">
-                        <div class="progress progress_sm" style="width: 76%;">
-                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-12 col-sm-12 col-xs-6">
-                    <div>
-                      <p>Conventional Media</p>
-                      <div class="">
-                        <div class="progress progress_sm" style="width: 76%;">
-                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="40"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p>Bill boards</p>
-                      <div class="">
-                        <div class="progress progress_sm" style="width: 76%;">
-                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
+                <div class="col-md-8 col-md-offset-2 col-sm-9 col-xs-12">
+                  <div id="placeholder" style="min-height:300px"></div>
                 </div>
 
                 <div class="clearfix"></div>
@@ -121,8 +78,7 @@
           </div>
           <br />
 
-         
-          </div>
+
         </div>
         <!-- /page content -->
 
@@ -156,6 +112,7 @@
     <script src="../vendors/Flot/jquery.flot.time.js"></script>
     <script src="../vendors/Flot/jquery.flot.stack.js"></script>
     <script src="../vendors/Flot/jquery.flot.resize.js"></script>
+    <script src="../vendors/Flot/jquery.flot.categories.js"></script>
     <!-- Flot plugins -->
     <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
     <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
@@ -171,7 +128,92 @@
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
+    <!--script src="../build/js/custom.min.js"></script-->
+
+    <script src="../vendors/knockout/knockout-3.4.2.js"></script>
+    <script type="text/javascript">
+      function Sebaran() {
+          var self = this;
+          self.mata_kuliah_id = 4;
+          self.tahun = 2016;
+          self.semester = null;
+      }
+
+      function App() {
+          var self = this;
+
+          self.sebaran = new Sebaran();
+
+          self.lihat = function() {
+              $.ajax({
+              "method": "POST",
+              "contentType": "application/json; charset=utf-8",
+              "url": "http://localhost:3000/nilai-mutu/sebaran",
+              "data": JSON.stringify(self.sebaran),
+              "success": function(hasil) {
+                var hasil_data = $.map(hasil.data, function(value, index) {
+                    return [[index, value]];
+                });
+                $.plot("#placeholder", [ hasil_data ], {
+                series: {
+                  splines: {
+                    show: true,
+                    tension: 0.2,
+                    lineWidth: 1,
+                    fill: 0.4
+                  },
+                  points: {
+                    radius: 4,
+                    show: true
+                  },
+                  shadowSize: 2
+                },
+                grid: {
+                  verticalLines: true,
+                  hoverable: true,
+                  clickable: true,
+                  tickColor: "#d5d5d5",
+                  borderWidth: 1,
+                  color: '#fff'
+                },
+                colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
+                xaxis: {
+                  mode: "categories",
+                  tickLength: 0,
+                  min: 0
+                }
+              });
+
+              $("<div id='tooltip'></div>").css({
+                position: "absolute",
+                display: "none",
+                border: "1px solid #fdd",
+                padding: "2px",
+                "background-color": "#fee",
+                opacity: 0.80
+              }).appendTo("body");
+
+              $("#placeholder").bind("plothover", function (event, pos, item) {
+                  if (item) {
+                    var x = item.datapoint[0],
+                      y = item.datapoint[1];
+
+                    $("#tooltip").html(y)
+                      .css({top: item.pageY+5, left: item.pageX+5})
+                      .fadeIn(200);
+                  }
+              });
+
+              }   
+            }).fail(function() {
+              alert( "gagal" );
+            });
+          };
+      }
+
+      $(document).ready(function() { ko.applyBindings(new App()); });
+
+    </script>
   
   </body>
 </html>
