@@ -12,8 +12,12 @@ router.post('/create', function(req, res) {
   nilai_mutu.create(req, res);
 });
 
-router.post('/upload/', function(req, res) {
-  nilai_mutu.upload(req, res);
+router.post('/upload/prediksi/:angkatan', function(req, res) {
+  nilai_mutu.uploadPrediksi(req, res);
+});
+
+router.post('/upload/learning/:angkatan', function(req, res) {
+  nilai_mutu.uploadLearning(req, res);
 });
 
 module.exports = router;
