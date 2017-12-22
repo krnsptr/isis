@@ -41,13 +41,13 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <!-- top tiles -->
-          <div class="row tile_count">
+          <!--div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-user"></i> Mahasiswa Aktif</span>
               <div class="count">369</div>
               <span class="count_bottom"><i class="green">4% </i>Masa Studi >4tahun</span>
             </div>
-          </div>
+          </div-->
           <!-- /top tiles -->
 
           <div class="row">
@@ -55,63 +55,18 @@
               <div class="dashboard_graph">
 
                 <div class="row x_title">
-                  <div class="col-md-6">
-                    <h3>Network Activities <small>Graph title sub-title</small></h3>
+                  <div class="col-md-5">
+                    <h3>Prediksi Rata-Rata IPK Angkatan</h3>
                   </div>
-                  <div class="col-md-6">
-                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                      <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                    </div>
+                  <div class="col-md-7">
+                    <label>Angkatan</label>
+                    <input type="number" data-bind="value: prediksi.angkatan" />
+                    <button data-bind="click: lihat">Lihat</button>
                   </div>
                 </div>
 
-                <div class="col-md-9 col-sm-9 col-xs-12">
-                  <div id="chart_plot_01" class="demo-placeholder"></div>
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-12 bg-white">
-                  <div class="x_title">
-                    <h2>Top Campaign Performance</h2>
-                    <div class="clearfix"></div>
-                  </div>
-
-                  <div class="col-md-12 col-sm-12 col-xs-6">
-                    <div>
-                      <p>Facebook Campaign</p>
-                      <div class="">
-                        <div class="progress progress_sm" style="width: 76%;">
-                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="80"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p>Twitter Campaign</p>
-                      <div class="">
-                        <div class="progress progress_sm" style="width: 76%;">
-                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-12 col-sm-12 col-xs-6">
-                    <div>
-                      <p>Conventional Media</p>
-                      <div class="">
-                        <div class="progress progress_sm" style="width: 76%;">
-                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="40"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p>Bill boards</p>
-                      <div class="">
-                        <div class="progress progress_sm" style="width: 76%;">
-                          <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
+                <div class="col-md-8 col-md-offset-2 col-sm-9 col-xs-12">
+                  <h3>Hasil Prediksi: <span data-bind="text: hasil"></span></h3>
                 </div>
 
                 <div class="clearfix"></div>
@@ -121,8 +76,7 @@
           </div>
           <br />
 
-         
-          </div>
+
         </div>
         <!-- /page content -->
 
@@ -156,6 +110,7 @@
     <script src="../vendors/Flot/jquery.flot.time.js"></script>
     <script src="../vendors/Flot/jquery.flot.stack.js"></script>
     <script src="../vendors/Flot/jquery.flot.resize.js"></script>
+    <script src="../vendors/Flot/jquery.flot.categories.js"></script>
     <!-- Flot plugins -->
     <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
     <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
@@ -171,7 +126,49 @@
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
+    <!--script src="../build/js/custom.min.js"></script-->
+
+    <script src="../vendors/knockout/knockout-3.4.2.js"></script>
+    <script type="text/javascript">
+
+      $(document).ajaxStart(function (){
+          $('html, body, button').css("cursor", "wait");
+      }).ajaxComplete(function () {
+          $('html, body').css("cursor", "auto");
+          $('button').css("cursor", "pointer");
+      });
+
+      function Prediksi() {
+          var self = this;
+
+          self.angkatan = 52;
+      }
+
+      function App() {
+          var self = this;
+
+          self.prediksi = new Prediksi(self);
+          self.hasil = ko.observable(0.00);
+
+          self.lihat = function() {
+              $.ajax({
+                "method": "POST",
+                "contentType": "application/json; charset=utf-8",
+                "url": "http://localhost:3000/mahasiswa/ipk/prediksi",
+                "data": JSON.stringify(self.prediksi),
+                "success": function(hasil) {
+                  self.hasil(hasil.data[0].toFixed(2));
+                  console.log(self.hasil);
+              }   
+            }).fail(function() {
+              alert( "gagal" );
+            });
+          };
+      }
+
+      ko.applyBindings(new App());
+
+    </script>
   
   </body>
 </html>

@@ -65,7 +65,7 @@ function MahasiswaControllers() {
 		var angkatan = req.body.angkatan;
 		var options = {
 			mode: 'json',
-			pythonPath: 'python',
+			pythonPath: 'python3',
 			scriptPath: __dirname,
 			args: [angkatan]
 		};
@@ -83,7 +83,7 @@ function MahasiswaControllers() {
 		var angkatan = req.body.angkatan;
 		var options = {
 			mode: 'json',
-			pythonPath: 'python',
+			pythonPath: 'python3',
 			scriptPath: __dirname,
 			args: [angkatan]
 		};

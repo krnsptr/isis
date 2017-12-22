@@ -152,7 +152,6 @@
                   var hasil_data = $.map(hasil.data, function(value, index) {
                       return [[index, value]];
                   });
-                  console.log(hasil_data);
                   $.plot("#placeholder", [ hasil_data ], {
                   series: {
                     splines: {
