@@ -21,6 +21,12 @@
     <!-- Custom Theme Style -->
     <link href="build/css/custom.min.css" rel="stylesheet">
 
+    <script type="text/javascript">
+      if (localStorage.token) {
+        location = '/production/home.php';
+      }
+    </script>
+
     <script src="vendors/knockout/knockout-3.4.2.js"></script>
   </head>
 
@@ -62,13 +68,36 @@
 
       </div>
     </div>
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript">
-      function App() {
-          this.email = "";
-          this.password = "";
+      $(document).ajaxStart(function (){
+          $('html, body, button').css("cursor", "wait");
+      }).ajaxComplete(function () {
+          $('html, body').css("cursor", "auto");
+          $('button').css("cursor", "pointer");
+      });
 
-          this.login = function() {
-              alert(this.email + ' : ' + this.password);
+      function App() {
+          var self = this;
+          self.email = "";
+          self.password = "";
+
+          self.login = function() {
+              $.ajax({
+                "method": "POST",
+                "contentType": "application/json; charset=utf-8",
+                "url": "http://localhost:3000/user/login",
+                "data": JSON.stringify({"email": self.email, "password": self.password }),
+                "success": function(hasil) {
+                  alert(hasil.message);
+                  if(hasil.status) {
+                    localStorage.token = hasil.token;
+                    location = '/production/home.php';
+                  }
+                }   
+              }).fail(function() {
+                alert( "gagal" );
+              });
           };
       }
 
