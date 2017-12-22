@@ -38,14 +38,18 @@ function MahasiswaControllers() {
 				},
 				attributes: [
 					'ipk'
+				],
+				order: [
+					['ipk', 'ASC']
 				]
 			})
 			.then((result) => {
 				result.forEach((item) => {
-					if (item.ipk in sebaran) {
-						sebaran[item.ipk] += 1;
+					var ipk = item.ipk.toFixed(2);
+					if (ipk in sebaran) {
+						sebaran[ipk] += 1;
 					} else {
-						sebaran[item.ipk] = 1;
+						sebaran[ipk] = 1;
 					}
 				});
 			})

@@ -55,12 +55,12 @@
               <div class="dashboard_graph">
 
                 <div class="row x_title">
-                  <div class="col-md-6">
+                  <div class="col-md-5">
                     <h3>Sebaran Nilai Mata Kuliah</h3>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-7">
                     <label>Mata Kuliah</label>
-                    <input type="number" data-bind="value: sebaran.mata_kuliah_id" />
+                    <td><select data-bind="options: $root.daftar_mata_kuliah, value: $root.mata_kuliah, optionsText: 'nama'"></select></td>
                     <label>Tahun</label>
                     <input type="number" data-bind="value: sebaran.tahun" />
                     <button data-bind="click: lihat">Lihat</button>
@@ -132,77 +132,84 @@
 
     <script src="../vendors/knockout/knockout-3.4.2.js"></script>
     <script type="text/javascript">
+
       function Sebaran() {
           var self = this;
+
           self.mata_kuliah_id = 4;
           self.tahun = 2016;
           self.semester = null;
       }
 
-      function App() {
+      function App(daftar_mata_kuliah = [], mata_kuliah = null) {
           var self = this;
 
-          self.sebaran = new Sebaran();
+          self.sebaran = new Sebaran(self);
+          self.daftar_mata_kuliah = daftar_mata_kuliah;
+          self.mata_kuliah = mata_kuliah;
 
           self.lihat = function() {
+              self.sebaran.mata_kuliah_id = self.mata_kuliah.id;
               $.ajax({
-              "method": "POST",
-              "contentType": "application/json; charset=utf-8",
-              "url": "http://localhost:3000/nilai-mutu/sebaran",
-              "data": JSON.stringify(self.sebaran),
-              "success": function(hasil) {
-                var hasil_data = $.map(hasil.data, function(value, index) {
-                    return [[index, value]];
-                });
-                $.plot("#placeholder", [ hasil_data ], {
-                series: {
-                  splines: {
-                    show: true,
-                    tension: 0.2,
-                    lineWidth: 1,
-                    fill: 0.4
+                "method": "POST",
+                "contentType": "application/json; charset=utf-8",
+                "url": "http://localhost:3000/nilai-mutu/sebaran",
+                "data": JSON.stringify(self.sebaran),
+                "success": function(hasil) {
+                  var hasil_data = $.map(hasil.data, function(value, index) {
+                      return [[index, value]];
+                  });
+                  $.plot("#placeholder", [ hasil_data ], {
+                  series: {
+                    splines: {
+                      show: true,
+                      tension: 0.2,
+                      lineWidth: 1,
+                      fill: 0.4
+                    },
+                    points: {
+                      radius: 4,
+                      show: true
+                    },
+                    shadowSize: 2
                   },
-                  points: {
-                    radius: 4,
-                    show: true
+                  grid: {
+                    verticalLines: true,
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "#d5d5d5",
+                    borderWidth: 1,
+                    color: '#fff'
                   },
-                  shadowSize: 2
-                },
-                grid: {
-                  verticalLines: true,
-                  hoverable: true,
-                  clickable: true,
-                  tickColor: "#d5d5d5",
-                  borderWidth: 1,
-                  color: '#fff'
-                },
-                colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
-                xaxis: {
-                  mode: "categories",
-                  tickLength: 0,
-                  min: 0
-                }
-              });
-
-              $("<div id='tooltip'></div>").css({
-                position: "absolute",
-                display: "none",
-                border: "1px solid #fdd",
-                padding: "2px",
-                "background-color": "#fee",
-                opacity: 0.80
-              }).appendTo("body");
-
-              $("#placeholder").bind("plothover", function (event, pos, item) {
-                  if (item) {
-                    var x = item.datapoint[0],
-                      y = item.datapoint[1];
-
-                    $("#tooltip").html(y)
-                      .css({top: item.pageY+5, left: item.pageX+5})
-                      .fadeIn(200);
+                  colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
+                  xaxis: {
+                    mode: "categories",
+                    tickLength: 0
+                  },
+                  yaxis: {
+                    min: 0
                   }
-              });
+                });
+
+                $("<div id='tooltip'></div>").css({
+                  position: "absolute",
+                  display: "none",
+                  border: "1px solid #fdd",
+                  padding: "2px",
+                  "background-color": "#fee",
+                  opacity: 0.80
+                }).appendTo("body");
+
+                $("#placeholder").bind("plothover", function (event, pos, item) {
+                    if (item) {
+                      var x = item.datapoint[0],
+                        y = item.datapoint[1];
+
+                      $("#tooltip").html(y)
+                        .css({top: item.pageY+5, left: item.pageX+5})
+                        .fadeIn(200);
+                    }
+                });
 
               }   
             }).fail(function() {
@@ -211,7 +218,15 @@
           };
       }
 
-      $(document).ready(function() { ko.applyBindings(new App()); });
+      $.getJSON({
+        "url": "http://localhost:3000/mata-kuliah/all",
+        "success": function(hasil) {
+          ko.applyBindings(new App(hasil.data, hasil.data[0]));
+        },
+        "error": function() {
+          ko.applyBindings(new App());
+        }
+      });
 
     </script>
   

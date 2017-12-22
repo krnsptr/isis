@@ -40,17 +40,25 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
+<center>
+    <br>
+    <br>
+    <br>
 
           <div class="row">
-            <h3>Tambah Mata Kuliah Baru</h3>
+            <h3>Upload Data Nilai dalam Bentuk CSV</h3>
             <div class="col-md-12 col-sm-12 col-xs-12">
               <form method="post" action="">
-                <input type="text" name="kode" placeholder=" Kode mis : KOM 201">
-                <input type="text" name="namamatkul" placeholder="Nama Matkul">
-                <input type="text" name="deskripsi" placeholder="Deskripsi"> 
+                <input type="file" name="kode" placeholder=" Kode mis : KOM 201">
+                <button type="submit"> Upload </button>
               </form>
             </div>
+            <br>
+            <br>
+            <br>
 
+            <a href="">Lihat Contoh File Nilai</a>
+</div>
           </div>
           <br />
 
