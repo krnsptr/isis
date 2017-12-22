@@ -64,41 +64,59 @@ function NilaiMutuControllers() {
 			});
 	}
 
-	// this.uploadLearning = function(req, res) {
-	// 	var destination = 'public/uploads/';
-	// 	var dir = '/../';
-	// 	var filename = '';
+	this.uploadPrediksi = function(req, res) {
+		var destination = 'public/uploads/prediksi';
+		var dir = '/../';
+		var angkatan = req.params.angkatan;
 
-	// 	var upload = multer({
-	// 		storage: multer.diskStorage({
-	// 			destination: function (req, file, cb) {
-	// 		    	cb(null, __dirname + dir + destination);
-	// 		  	},
-	// 			filename: function (req, file, cb) {
-	// 				filename = file.fieldname + '-' + Date.now() + '.xlsx'
-	// 		      	cb(null, filename);
-	// 		  	}
-	// 		})
-	// 	}).any();
+		var upload = multer({
+			storage: multer.diskStorage({
+				destination: function (req, file, cb) {
+			    	cb(null, __dirname + dir + destination);
+			  	},
+				filename: function (req, file, cb) {
+			      	filename = angkatan + '.xlsx';
+			      	cb(null, filename);
+			  	}
+			})
+		}).any();
 
-	// 	upload(req, res, function(err) {
-	// 		if (err) {
-	// 			res.json({status: false, message: 'Upload xlsx gagal!', err: err});
-	// 		} else {
-	// 			PythonShell.run('my_script.py', options, function (err, results) {
-	// 			  if (err) throw err;
-	// 			  // results is an array consisting of messages collected during execution
-	// 			  console.log('results: %j', results);
-	// 			});
-	// 		}
-	// 	});
-	// }
+		upload(req, res, function(err) {
+			// var bitmap = fs.readFileSync(__dirname + dir + destination + '/' + angkatan).toString('hex', 0, 4);
+			if (err) {
+				res.json({status: false, message: 'Upload data prediksi gagal!', err: err});
+			} else {
+				res.json({status: true, message: 'Upload data prediksi berhasil!'});
+			}
+		});
+	}
 
-	// this.prediksi = function(req, res) {
-	// 	var angkatan = req.body.angkatan;
+	this.uploadLearning = function(req, res) {
+		var destination = 'public/uploads/learning';
+		var dir = '/../';
+		var angkatan = req.params.angkatan;
 
-	// 	NilaiMutu
-	// }
+		var upload = multer({
+			storage: multer.diskStorage({
+				destination: function (req, file, cb) {
+			    	cb(null, __dirname + dir + destination);
+			  	},
+				filename: function (req, file, cb) {
+			      	filename = angkatan + '.xlsx';
+			      	cb(null, filename);
+			  	}
+			})
+		}).any();
+
+		upload(req, res, function(err) {
+			// var bitmap = fs.readFileSync(__dirname + dir + destination + '/' + angkatan).toString('hex', 0, 4);
+			if (err) {
+				res.json({status: false, message: 'Upload data prediksi gagal!', err: err});
+			} else {
+				res.json({status: true, message: 'Upload data prediksi berhasil!'});
+			}
+		});
+	}
 }
 
 module.exports = new NilaiMutuControllers();
