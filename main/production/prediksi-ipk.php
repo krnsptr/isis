@@ -158,7 +158,6 @@
                 "data": JSON.stringify(self.prediksi),
                 "success": function(hasil) {
                   self.hasil(hasil.data[0].toFixed(2));
-                  console.log(self.hasil);
               }   
             }).fail(function() {
               alert( "gagal" );

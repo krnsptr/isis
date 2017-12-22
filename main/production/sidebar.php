@@ -23,7 +23,7 @@
                   </li>
                    <li><a href="sebaran-nilai.php"><i class="fa fa-area-chart"></i>Sebaran Nilai</a>
                   </li>
-                   <li><a href="input-nilai.php"><i class="fa fa-keyboard-o"></i>Input Nilai</a>
+                   <li><a href="prediksi-kelulusan.php"><i class="fa fa-graduation-cap"></i>Prediksi Kelulusan</a>
                   </li>
                 </ul>
               </div>
